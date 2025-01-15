@@ -18,18 +18,16 @@ public class GliderClientUtil {
     public static int ticksUsingGlider = 0;
 
     public static boolean isActivatingGlider(ClientPlayerEntity player) {
-        return GliderUtil.isHoldingGlider(player) && player.input.jumping && !player.getAbilities().flying;
+        return GliderUtil.isHoldingGlider(player) && player.input.jumping && !player.getAbilities().flying && !player.isSwimming() && !player.isInFluid();
     }
 
-    public static boolean isUsingGliderMoreThanOneJump(ClientPlayerEntity player) {
+    public static boolean isUsingGliderMoreThanOneJump() {
         return ticksUsingGlider > 4;
     }
 
     public static boolean isGliding(ClientPlayerEntity player) {
         Vec3d velocity = player.getVelocity();
-
-        return isActivatingGlider(player) && isUsingGliderMoreThanOneJump(player) && !player.isOnGround()
-                && !player.isInFluid() && !player.isFallFlying() && velocity.y < 0;
+        return isActivatingGlider(player) && isUsingGliderMoreThanOneJump() && !player.isOnGround() && !player.isFallFlying() && velocity.y < 0;
     }
 
     // Called at the end of every tick on the client using a CLIENT_END_TICK event registered in GlidingClient class
@@ -59,7 +57,7 @@ public class GliderClientUtil {
                 ClientPlayNetworking.send(new GliderActivatedC2SPayload(true, true));
 
             // if the player is activating the glider but not gliding
-            } else if (GliderClientUtil.isUsingGliderMoreThanOneJump(player)) {
+            } else if (GliderClientUtil.isUsingGliderMoreThanOneJump()) {
                 ((PlayerEntityDuck) player).gliding$setIsActivatingGlider(true);
                 ((PlayerEntityDuck) player).gliding$setIsGliding(false);
                 ClientPlayNetworking.send(new GliderActivatedC2SPayload(true, false));
