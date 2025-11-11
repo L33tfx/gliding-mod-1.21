@@ -35,7 +35,7 @@ public class GliderClientUtil {
         ClientPlayerEntity player = client.player;
 
         // if player is in a world and is activating the glider
-        if (player != null && GliderClientUtil.isActivatingGlider(player)) {
+        if (player != null && GliderClientUtil.isActivatingGlider(player) && !client.isPaused()) {
             ticksUsingGlider++;
 
             // if player is already gliding or in a state to glide
@@ -64,7 +64,7 @@ public class GliderClientUtil {
             }
 
         // if the player exists and was previously activating glider but not anymore, send packets to update
-        } else if (player != null && ((PlayerEntityDuck) player).gliding$isActivatingGlider()) {
+        } else if (player != null && ((PlayerEntityDuck) player).gliding$isActivatingGlider() && !client.isPaused()) {
             ticksUsingGlider = 0;
             ((PlayerEntityDuck) player).gliding$setIsActivatingGlider(false);
             ((PlayerEntityDuck) player).gliding$setIsGliding(false);
