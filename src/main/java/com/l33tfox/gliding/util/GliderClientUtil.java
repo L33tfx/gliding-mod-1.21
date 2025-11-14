@@ -3,6 +3,7 @@ package com.l33tfox.gliding.util;
 import com.l33tfox.gliding.PlayerEntityDuck;
 import com.l33tfox.gliding.client.sound.GliderSoundManager;
 import com.l33tfox.gliding.client.sound.GlidingWindSoundInstance;
+import com.l33tfox.gliding.config.GlidingSyncedConfig;
 import com.l33tfox.gliding.networking.payload.GliderActivatedC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -18,6 +19,10 @@ public class GliderClientUtil {
     public static int ticksUsingGlider = 0;
 
     public static boolean isActivatingGlider(ClientPlayerEntity player) {
+        if (!GlidingSyncedConfig.offHandEnabled) {
+            return GliderUtil.mainHandHoldingGlider(player) && player.input.jumping && !player.getAbilities().flying && !player.isSwimming() && !player.isInFluid();
+        }
+
         return GliderUtil.isHoldingGlider(player) && player.input.jumping && !player.getAbilities().flying && !player.isSwimming() && !player.isInFluid();
     }
 

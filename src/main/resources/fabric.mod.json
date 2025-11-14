@@ -23,6 +23,9 @@
 		],
 		"client": [
 			"com.l33tfox.gliding.GlidingClient"
+		],
+		"modmenu": [
+			"com.l33tfox.gliding.ModMenuIntegration"
 		]
 	},
 	"mixins": [
